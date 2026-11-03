@@ -2261,8 +2261,8 @@ function buildTips(){
   h+='<div style="display:flex;gap:8px">';
   h+='<a href="https://www.tripadvisor.fr/Tourism-g227912-Valkenburg_Limburg_Province-Vacations.html" target="_blank" rel="noopener" style="flex:1;text-align:center;padding:10px 6px;border-radius:10px;background:#00AA6C;color:#fff;font-size:12px;font-weight:700;text-decoration:none">Valkenburg</a>';
   h+='<a href="https://www.tripadvisor.fr/Restaurants-g227912-Valkenburg_Limburg_Province.html" target="_blank" rel="noopener" style="flex:1;text-align:center;padding:10px 6px;border-radius:10px;background:#00AA6C;color:#fff;font-size:12px;font-weight:700;text-decoration:none">Restos</a>';
-  h+='<a href="https://www.tripadvisor.fr/Search?q=restaurants+Maastricht" target="_blank" rel="noopener" style="flex:1;text-align:center;padding:10px 6px;border-radius:10px;background:#E8F7F0;color:#00704A;font-size:12px;font-weight:700;text-decoration:none">Maastricht</a>';
-  h+='<a href="https://www.tripadvisor.fr/Search?q=restaurants+Tongeren" target="_blank" rel="noopener" style="flex:1;text-align:center;padding:10px 6px;border-radius:10px;background:#E8F7F0;color:#00704A;font-size:12px;font-weight:700;text-decoration:none">Tongres</a>';
+  h+='<a href="https://www.tripadvisor.fr/Tourism-g188575-Maastricht_Limburg_Province-Vacations.html" target="_blank" rel="noopener" style="flex:1;text-align:center;padding:10px 6px;border-radius:10px;background:#E8F7F0;color:#00704A;font-size:12px;font-weight:700;text-decoration:none">Maastricht</a>';
+  h+='<a href="https://www.tripadvisor.fr/Tourism-g188651-Tongeren_Limburg_Province-Vacations.html" target="_blank" rel="noopener" style="flex:1;text-align:center;padding:10px 6px;border-radius:10px;background:#E8F7F0;color:#00704A;font-size:12px;font-weight:700;text-decoration:none">Tongres</a>';
   h+='</div></div>';
 
   h+='<div class="st">Météo en direct</div>';
@@ -3213,5 +3213,16 @@ document.addEventListener('DOMContentLoaded',function(){run();mo.observe(documen
 <script>
 (function(){ var t=null; new MutationObserver(function(){ clearTimeout(t); t=setTimeout(function(){ if(document.querySelector(".tk-n:empty")) tkCount(); },150); }).observe(document.documentElement,{childList:true,subtree:true}); })();
 </script>
-</body>
+<script>
+document.addEventListener('click',function(e){
+  var a=e.target.closest&&e.target.closest('a[href*="tripadvisor."]');
+  if(!a)return;
+  var u=a.href; if(u.indexOf('/Search?')>-1)return;
+  e.preventDefault(); e.stopPropagation();
+  var app=u.replace(/^https?:\/\//,'tripadvisor://');
+  var t=setTimeout(function(){ if(!document.hidden) window.open(u,'_blank'); },1600);
+  document.addEventListener('visibilitychange',function v(){ if(document.hidden){clearTimeout(t);document.removeEventListener('visibilitychange',v);} });
+  window.location.href=app;
+},true);
+</script>\n</body>
 </html>
