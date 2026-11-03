@@ -1,4 +1,4 @@
-const CACHE = 'carnet-valkenburg-20261103-224026';
+const CACHE = 'carnet-valkenburg-20261103-224345';
 const PREFIX = 'carnet-valkenburg-';
 
 const CORE = [
@@ -12,6 +12,7 @@ const IMAGES = [
   './airbnb-pelemele.jpg',
   './airbnb-tongres.jpg',
   './antiquites-tongres.jpg',
+  './bateau-meuse.jpg',
   './fluweelengrot.jpg',
   './gemeentegrot.jpg',
   './parade-landal.jpg',
