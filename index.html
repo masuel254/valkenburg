@@ -564,6 +564,7 @@ details.acc[open] .acc-chevron{transform:rotate(180deg)}
 .tk-btn{display:inline-flex;align-items:center;gap:4px;box-sizing:border-box;height:26px;margin:9px 0 0;background:#0F1B23;color:#F2D08A!important;border-radius:20px;padding:6px 11px;font-family:-apple-system,sans-serif;font-size:11px;font-weight:800;line-height:1;text-decoration:none;letter-spacing:.2px}
 .tk-btn.tk-empty{background:#fff;color:#0F1B23!important;box-shadow:inset 0 0 0 1.5px #0F1B23}
 .tk-n{font-weight:600;opacity:.85}
+.tk-btn.tk-mini{margin:0;height:24px;padding:5px 9px;font-size:10.5px}
 .tk-sh{display:none;position:fixed;inset:0;z-index:99999;background:rgba(15,27,35,.55);align-items:flex-end;justify-content:center}.tk-sh.open{display:flex}
 .tk-pan{background:#FAF7F0;border-radius:22px 22px 0 0;width:100%;max-width:480px;max-height:92vh;overflow:auto;padding:10px 16px calc(22px + env(safe-area-inset-bottom));box-sizing:border-box;font-family:-apple-system,sans-serif}
 .tk-bar{width:40px;height:5px;background:#ddd;border-radius:3px;margin:0 auto 10px}
@@ -1732,7 +1733,7 @@ var todoItems = [
  {
   "id": "t_restos",
   "ico": "🍽️",
-  "due": "2026-11-15",
+  "due": "2026-12-03",
   "rt": "10:00",
   "evd": "2026-12-19",
   "color": "#C8573F",
@@ -1758,26 +1759,6 @@ var todoItems = [
   "color": "#5B3A7E",
   "name": "Champagne et sac isotherme",
   "sub": "Bouteilles au frais la veille, maillots de bain dans les sacs"
- },
- {
-  "id": "t_thomas",
-  "ico": "📱",
-  "due": "2026-12-18",
-  "rt": "19:00",
-  "evd": "2026-12-18",
-  "color": "#5B3A7E",
-  "name": "Prévenir Thomas et Clémentine",
-  "sub": "15 minutes avant l’arrivée à Lille, prêts en bas avec les sacs"
- },
- {
-  "id": "t_rendre",
-  "ico": "🔑",
-  "due": "2026-12-21",
-  "rt": "09:00",
-  "evd": "2026-12-21",
-  "color": "#5B3A7E",
-  "name": "Rendre le SUV",
-  "sub": "Plein fait, selon les conditions du loueur"
  }
 ];
 var todoGroups = {};
@@ -2014,8 +1995,8 @@ function loadResaDetails(){
 function buildInfo(){
   // Load checklist state
   var chkState = loadChkState();
-  var RESA_VIEW = {"gemeentegrot": {"k": "b1", "dw": "SAM", "dn": "19", "m": "DÉC", "ico": "🎄", "t": "Gemeentegrot", "line": "Entrée 11h00 - 11h30 · billet unique pour 6", "ref": "005247814", "st": "Réservé"}, "fluweelengrot": {"k": "b2", "dw": "SAM", "dn": "19", "m": "DÉC", "ico": "🎄", "t": "Fluweelengrot", "line": "Entrée 14h00 - 14h30 · 6 billets", "ref": "005247814", "st": "Réservé"}, "linde": {"k": "3", "when": "Dès que possible", "j": "dès maintenant", "ico": "🍽️", "t": "Aan de Linde, samedi 17h45", "sub": "Table de 6, préciser le départ à 19h10 pour la parade", "url": "https://www.aandelinde.eu", "lbl": "Aan de Linde"}, "botterweck": {"k": "4", "when": "Dès que possible", "j": "dès maintenant", "ico": "🍽️", "t": "Brasserie Royal, samedi 12h30", "sub": "Table de 6, par téléphone", "url": "tel:+31436012017", "lbl": "Appeler"}, "ingel": {"k": "6", "when": "Avant le 11 décembre", "j": "une semaine avant", "ico": "🍽️", "t": "D’n Ingel, dimanche 12h00", "sub": "Table de 6 - +31 43 321 7226", "url": "https://www.ingel.nl", "lbl": "D’n Ingel"}, "stiphout": {"k": "b3", "dw": "DIM", "dn": "20", "m": "DÉC", "ico": "⛴️", "t": "Croisière sur la Meuse", "line": "Départ 14h00 · embarquement 13h45 · embarcadère n°2", "ref": "RR0260551", "st": "Réservé"}, "airbnb": {"k": "a1", "dw": "VEN", "dn": "18", "m": "DÉC", "ico": "🏠", "t": "Airbnb Tongres", "line": "2 nuits · Putstraat 8 · jacuzzi", "ref": "Airbnb", "st": "Réservé"}, "voiture": {"k": "a0", "dw": "VEN", "dn": "18", "m": "DÉC", "ico": "🚙", "t": "SUV 7 places", "line": "Retrait vers 12h00", "ref": "Location", "st": "Réservé"}};
-  window.RV_DEAD = {"airbnb": "Réservé - 2 nuits - hôte Jelle", "voiture": "Réservée - retrait vendredi midi", "gemeentegrot": "Réservé - commande 005247814 - entrée 11h00-11h30 - billet unique pour 6", "fluweelengrot": "Réservé - commande 005247814 - entrée 14h00-14h30 - 6 billets", "linde": "À réserver - table de 6, départ 19h10 pour la parade", "botterweck": "À réserver par téléphone - table de 6", "ingel": "À réserver - table de 6", "stiphout": "Réservé - RR0260551 - 6 pers. - embarquement 13h45 embarcadère n°2"};
+  var RESA_VIEW = {"gemeentegrot": {"k": "b1", "dw": "SAM", "dn": "19", "m": "DÉC", "ico": "🎄", "t": "Gemeentegrot", "line": "Entrée 11h00 - 11h30 · billet unique pour 6", "ref": "005247814", "st": "Réservé"}, "fluweelengrot": {"k": "b2", "dw": "SAM", "dn": "19", "m": "DÉC", "ico": "🎄", "t": "Fluweelengrot", "line": "Entrée 14h00 - 14h30 · 6 billets", "ref": "005247814", "st": "Réservé"}, "linde": {"k": "3", "when": "À partir du 3 décembre", "j": "15 jours avant", "ico": "🍽️", "t": "Aan de Linde, samedi 17h45", "sub": "Table de 6, préciser le départ à 19h10 pour la parade", "url": "https://www.aandelinde.eu", "lbl": "Aan de Linde"}, "botterweck": {"k": "4", "when": "À partir du 3 décembre", "j": "15 jours avant", "ico": "🍽️", "t": "Brasserie Royal, samedi 12h30", "sub": "Table de 6, par téléphone", "url": "tel:+31436012017", "lbl": "Appeler"}, "ingel": {"k": "6", "when": "À partir du 3 décembre", "j": "15 jours avant", "ico": "🍽️", "t": "D’n Ingel, dimanche 12h00", "sub": "Table de 6 - +31 43 321 7226", "url": "https://www.ingel.nl", "lbl": "D’n Ingel"}, "stiphout": {"k": "b3", "dw": "DIM", "dn": "20", "m": "DÉC", "ico": "⛴️", "t": "Croisière sur la Meuse", "line": "Départ 14h00 · embarquement 13h45 · embarcadère n°2", "ref": "RR0260551", "st": "Réservé"}, "airbnb": {"k": "a1", "dw": "VEN", "dn": "18", "m": "DÉC", "ico": "🏠", "t": "Airbnb Tongres", "line": "2 nuits · Putstraat 8 · jacuzzi", "ref": "Airbnb", "st": "Réservé"}, "voiture": {"k": "a0", "dw": "VEN", "dn": "18", "m": "DÉC", "ico": "🚙", "t": "SUV 7 places", "line": "Retrait vers 12h00", "ref": "Location", "st": "Réservé"}};
+  window.RV_DEAD = {"airbnb": "Réservé - 2 nuits - hôte Jelle", "voiture": "Réservée - retrait vendredi midi", "gemeentegrot": "Réservé - commande 005247814 - entrée 11h00-11h30 - billet unique pour 6", "fluweelengrot": "Réservé - commande 005247814 - entrée 14h00-14h30 - 6 billets", "linde": "À réserver 15 jours avant - table de 6, départ 19h10 pour la parade", "botterweck": "À réserver par téléphone - table de 6", "ingel": "À réserver - table de 6", "stiphout": "Réservé - RR0260551 - 6 pers. - embarquement 13h45 embarcadère n°2"};
 
   var chkItems = [
  {
@@ -2050,7 +2031,7 @@ function buildInfo(){
   "id": "linde",
   "name": "Dîner Aan de Linde (samedi 17h45)",
   "date": "19 déc",
-  "deadline": "À réserver - table de 6, départ 19h10 pour la parade",
+  "deadline": "À réserver 15 jours avant - table de 6, départ 19h10 pour la parade",
   "color": "#C8573F"
  },
  {
@@ -2123,7 +2104,7 @@ function buildInfo(){
         +'<div class="rv-perf"></div>'
         +'<div class="chk-viewbtn rv-body" data-resaid="'+item.id+'"><div style="display:flex;justify-content:space-between;gap:6px"><div class="chk-name rv-t" style="font-size:14px">'+(v.ico?v.ico+' ':'')+e(v.t||item.name)+'</div><span class="rv-pill rv-ok" style="align-self:flex-start;white-space:nowrap">&#10003; '+e(st)+'</span></div>'
         +'<div class="rv-s">'+e(v.line||item.date)+'</div>'
-        +'<div style="margin-top:6px;display:flex;gap:6px;align-items:center;flex-wrap:wrap">'+(ref?'<span class="rv-ref">'+e(ref)+'</span>':'')+(v.cash?'<span class="rv-pill rv-cash">Espèces</span>':'')+'<span class="rv-more">Détails &#8250;</span></div></div></div>';
+        +'<div style="margin-top:6px;display:flex;gap:6px;align-items:center;flex-wrap:wrap">'+(ref?'<span class="rv-ref">'+e(ref)+'</span>':'')+(v.cash?'<span class="rv-pill rv-cash">Espèces</span>':'')+'<a class="tk-btn tk-mini" href="#" data-tt="'+e(v.t||item.name).replace(/"/g,'&quot;')+'" onclick="event.preventDefault();event.stopPropagation();tkOpen(\''+item.id+'\',this.dataset.tt)">&#127903;&#65039; Billets<span class="tk-n" data-tkn="'+item.id+'"></span></a><span class="rv-more">Détails &#8250;</span></div></div></div>';
     });
       hChk+='</div></details>';
   }
@@ -2409,6 +2390,8 @@ function viewResaDetails(evt, id){
   if(det.site) html += '<div class="resa-detail-row"><div class="resa-detail-label">SITE / PLATEFORME</div><div class="resa-detail-value">'+det.site+'</div></div>';
   if(det.info) html += '<div class="resa-detail-row"><div class="resa-detail-label">INFO COMPLEMENTAIRE</div><div class="resa-detail-value">'+det.info+'</div></div>';
   if(!det.num && !det.site && !det.info) html = '<div style="color:#AAA;font-size:13px;padding:10px 0">Aucun détail enregistré.</div>';
+  window._tkId = id; window._tkName = name.textContent.replace(/\u0336/g,"");
+  html += '<a href="#" class="tk-add" style="display:block;margin-top:14px;text-decoration:none" onclick="event.preventDefault();var i=window._tkId,n=window._tkName;closeResaDetails();tkOpen(i,n)">&#127903;&#65039; Voir les billets</a>';
   document.getElementById("resaDetailsBody").innerHTML = html;
   document.getElementById("resaDetailsPopup").classList.add("open");
 }
@@ -2586,7 +2569,7 @@ function tkList(id,cb){ tkDb(function(db){ var o=[],q=db.transaction("f").object
   q.onsuccess=function(){ var c=q.result; if(c){ o.push(c.value); c.continue(); } else cb(o); }; }); }
 function tkAll(cb){ tkDb(function(db){ var q=db.transaction("f").objectStore("f").getAll(); q.onsuccess=function(){ cb(q.result||[]); }; }); }
 function tkCount(){ tkAll(function(a){ var n={}; a.forEach(function(x){ n[x.id]=(n[x.id]||0)+1; });
-  document.querySelectorAll(".tk-n").forEach(function(s){ var v=n[s.getAttribute("data-tkn")]; s.textContent=v?" · "+v:" · ajouter"; s.parentNode.classList.toggle("tk-empty",!v); }); }); }
+  document.querySelectorAll(".tk-n").forEach(function(s){ var v=n[s.getAttribute("data-tkn")]; var nt=v?" · "+v:" · ajouter"; if(s.textContent!==nt) s.textContent=nt; if(s.parentNode.classList.contains("tk-empty")!==!v) s.parentNode.classList.toggle("tk-empty",!v); }); }); }
 var TK_PDFJS=window.TK_PDFJS||"./pdfjs/";
 function tkLib(cb){ if(window.pdfjsLib) return cb(window.pdfjsLib); var sc=document.createElement("script"); sc.src=TK_PDFJS+"pdf.min.js";
   sc.onload=function(){ try{ pdfjsLib.GlobalWorkerOptions.workerSrc=TK_PDFJS+"pdf.worker.min.js"; cb(pdfjsLib); }catch(x){ cb(null); } };
@@ -3222,6 +3205,9 @@ if(v==='B'){const ph={"1": "airbnb-jacuzzi.jpg", "2": "gemeentegrot.jpg", "3": "
 (function(){var busy=false;function run(){if(busy)return;busy=true;try{__theme('B')}catch(e){}busy=false}
 var mo=new MutationObserver(function(){clearTimeout(run.t);run.t=setTimeout(run,0)});
 document.addEventListener('DOMContentLoaded',function(){run();mo.observe(document.getElementById('app')||document.body,{childList:true,subtree:true})});})();
+</script>
+<script>
+(function(){ var t=null; new MutationObserver(function(){ clearTimeout(t); t=setTimeout(function(){ if(document.querySelector(".tk-n:empty")) tkCount(); },150); }).observe(document.documentElement,{childList:true,subtree:true}); })();
 </script>
 </body>
 </html>
