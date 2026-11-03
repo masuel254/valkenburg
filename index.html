@@ -3255,17 +3255,5 @@ document.addEventListener('DOMContentLoaded',function(){run();mo.observe(documen
 <script>
 (function(){ var t=null; new MutationObserver(function(){ clearTimeout(t); t=setTimeout(function(){ if(document.querySelector(".tk-n:empty")) tkCount(); },150); }).observe(document.documentElement,{childList:true,subtree:true}); })();
 </script>
-<script>
-document.addEventListener('click',function(e){
-  var a=e.target.closest&&e.target.closest('a[href*="tripadvisor."]');
-  if(!a)return;
-  var u=a.href; if(u.indexOf('/Search?')>-1)return;
-  e.preventDefault(); e.stopPropagation();
-  var relay=new URL('ta.html',location.href).href+'?u='+encodeURIComponent(u);
-  var ios=/iPhone|iPad|iPod/.test(navigator.userAgent);
-  if(ios){ window.location.href=relay.replace(/^https:/,'x-safari-https:');
-    setTimeout(function(){ if(!document.hidden) window.open(relay,'_blank'); },1200);
-  } else { window.open(u,'_blank'); }
-},true);
-</script>\n</body>
+</body>
 </html>
