@@ -1,4 +1,4 @@
-const CACHE = 'carnet-valkenburg-20261103-221728';
+const CACHE = 'carnet-valkenburg-20261103-221837';
 const PREFIX = 'carnet-valkenburg-';
 
 const CORE = [
@@ -9,6 +9,7 @@ const CORE = [
 // Photos des fiches : ajouter ici './nom-du-fichier.jpg' une fois deposees sur GitHub.
 const IMAGES = [
   './airbnb-jacuzzi.jpg',
+  './airbnb-pelemele.jpg',
   './airbnb-tongres.jpg',
   './fluweelengrot.jpg',
   './gemeentegrot.jpg',
