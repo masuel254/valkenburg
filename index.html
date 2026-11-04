@@ -1593,7 +1593,7 @@ function openDay(id){
     var payBtn="", _p=(typeof PAY_EVENTS!=="undefined")?PAY_EVENTS[ev.title]:null;
     if(_p){var _pl={carte:["pay-card","&#128179; Carte"],especes:["pay-cash","&#128182; Esp&egrave;ces"],plutot:["pay-cash","&#128182; Esp&egrave;ces ?"],les2:["pay-card","&#128179; Carte ou esp&egrave;ces"],verifier:["","&#10068; &Agrave; v&eacute;rifier"]}[_p]; if(_pl) payBtn='<span class="pay-btn '+_pl[0]+'">'+_pl[1]+'</span>';}
     var webBtn="";
-    if(typeof WEB_DATA!=="undefined" && WEB_DATA[ev.title]) webBtn='<button class="web-btn" onclick="openWeb(this)" data-key="'+ev.title.replace(/"/g,"&quot;")+'">&#127760; Web</button>';
+    if(typeof WEB_DATA!=="undefined" && WEB_DATA[ev.title]) webBtn='';if(0)webBtn='<button class="web-btn" onclick="openWeb(this)" data-key="'+ev.title.replace(/"/g,"&quot;")+'">&#127760; Web</button>';
     if(typeof RESA_TODO!=="undefined" && RESA_TODO[ev.title] && loadChkState()[RESA_TODO[ev.title]]){var _tk=RESA_TODO[ev.title];webBtn+='<a class="tk-btn" href="#" data-tk="'+_tk+'" data-tt="'+e(ev.title).replace(/"/g,'&quot;')+'" onclick="event.preventDefault();event.stopPropagation();tkOpen(this.dataset.tk,this.dataset.tt)">&#127903;&#65039; Billets<span class="tk-n" data-tkn="'+_tk+'"></span></a>';setTimeout(tkCount,0);}
     if(typeof TA_EVENTS!=="undefined" && TA_EVENTS[ev.title]){var _ta=TA_EVENTS[ev.title];webBtn+='<a class="ta-btn" href="'+_ta[0]+'" target="_blank" rel="noopener" onclick="event.stopPropagation()" aria-label="Avis Tripadvisor"><i></i>'+(_ta[1]||'Avis')+'</a>';}
     var mapsTypes=["activity","meal","show","hotel"];
