@@ -576,6 +576,11 @@ details.acc[open] .acc-chevron{transform:rotate(180deg)}
 .tk-foot{display:flex;justify-content:space-between;align-items:center;padding:9px 12px;font-size:12px;color:#6d655b;border-top:1px solid #f0ebe0}.tk-foot button{border:0;background:none;color:#C8573F;font-weight:700;font-size:12px}
 .tk-cnt{font-size:12px;font-weight:800;color:#2F7A5F;margin:0 2px 8px}.tk-num{font-size:11px;font-weight:800;letter-spacing:1px;color:#fff;background:#0F1B23;padding:6px 12px}
 .tk-none{text-align:center;color:#8a8378;font-size:13px;padding:26px 10px;background:#fff;border-radius:14px;margin-bottom:12px;line-height:1.5}
+.tk-lock{background:#0F1B23;border-radius:16px;padding:18px 16px;margin-bottom:12px;text-align:center;color:#F4EFE4}.tk-lk-t{font:600 17px Georgia,serif;color:#F2D08A}.tk-lk-s{font-size:13px;opacity:.8;margin:6px 0 14px;line-height:1.4}
+.tk-lock input{width:150px;box-sizing:border-box;text-align:center;font-size:26px;letter-spacing:10px;padding:10px;border-radius:12px;border:0;background:#FAF7F0;color:#0F1B23;outline:none}
+.tk-lock button{display:block;width:100%;margin-top:12px;border:0;border-radius:12px;padding:12px 0;background:#2F7A5F;color:#fff;font-weight:700;font-size:14px}.tk-err{min-height:18px;margin-top:8px;font-size:13px;color:#F29B82;font-weight:700}
+.tk-qr{background:#fff;padding:14px 0 4px;text-align:center}.tk-qr img{width:72%;max-width:300px;height:auto;image-rendering:pixelated;display:inline-block}
+.tk-inf{padding:4px 14px 14px;text-align:center;display:flex;flex-direction:column;gap:3px}.tk-inf b{font:600 17px Georgia,serif;color:#0F1B23}.tk-inf span{font-size:12.5px;color:#6d655b}
 .tk-add{display:block;text-align:center;background:#0F1B23;color:#F2D08A;border-radius:12px;padding:13px 0;font-weight:700;font-size:14px}
 </style>
 </head>
@@ -2614,7 +2619,7 @@ function tkDb(cb){ if(TK_DB) return cb(TK_DB); var r=indexedDB.open("valk26_bill
 function tkList(id,cb){ tkDb(function(db){ var o=[],q=db.transaction("f").objectStore("f").index("id").openCursor(IDBKeyRange.only(id));
   q.onsuccess=function(){ var c=q.result; if(c){ o.push(c.value); c.continue(); } else cb(o); }; }); }
 function tkAll(cb){ tkDb(function(db){ var q=db.transaction("f").objectStore("f").getAll(); q.onsuccess=function(){ cb(q.result||[]); }; }); }
-function tkCount(){ tkAll(function(a){ var n={}; a.forEach(function(x){ n[x.id]=(n[x.id]||0)+1; });
+function tkCount(){ tkAll(function(a){ var n={}; a.forEach(function(x){ n[x.id]=(n[x.id]||0)+1; }); for(var _s in TK_SHN) n[_s]=(n[_s]||0)+TK_SHN[_s];
   document.querySelectorAll(".tk-n").forEach(function(s){ var v=n[s.getAttribute("data-tkn")]; var nt=v?" · "+v:" · ajouter"; if(s.textContent!==nt) s.textContent=nt; if(s.parentNode.classList.contains("tk-empty")!==!v) s.parentNode.classList.toggle("tk-empty",!v); }); }); }
 var TK_PDFJS=window.TK_PDFJS||"./pdfjs/";
 function tkLib(cb){ if(window.pdfjsLib) return cb(window.pdfjsLib); var sc=document.createElement("script"); sc.src=TK_PDFJS+"pdf.min.js";
@@ -2640,11 +2645,36 @@ function tkAdd(id,files){ var fl=[].slice.call(files), all=[], box=document.getE
     else { all.push({name:f.name,type:f.type,blob:f}); next(); }
   })(); }
 function tkDel(k,id){ if(!confirm("Retirer ce billet du téléphone ?")) return; tkDb(function(db){ var t=db.transaction("f","readwrite"); t.objectStore("f").delete(k); t.oncomplete=function(){ tkRender(id); tkCount(); }; }); }
+var TK_SHN={"gemeentegrot":1,"fluweelengrot":6,"stiphout":1}, TK_SD=null;
+function tkB64(s){ return Uint8Array.from(atob(s),function(c){return c.charCodeAt(0);}); }
+function tkUnlock(pin,cb){ var S=crypto.subtle;
+  fetch("billets.enc.json").then(function(r){return r.json();}).then(function(f){
+    return S.importKey("raw",new TextEncoder().encode(pin),"PBKDF2",false,["deriveKey"]).then(function(k){
+      return S.deriveKey({name:"PBKDF2",salt:tkB64(f.salt),iterations:f.it,hash:"SHA-256"},k,{name:"AES-GCM",length:256},false,["decrypt"]); })
+    .then(function(k){ return S.decrypt({name:"AES-GCM",iv:tkB64(f.iv)},k,tkB64(f.ct)); }); })
+  .then(function(b){ TK_SD=JSON.parse(new TextDecoder().decode(b)); try{ localStorage.setItem("valk26_pin",pin); }catch(x){} cb(true); })
+  .catch(function(){ cb(false); }); }
+function tkTry(id){ var i=document.getElementById("tkPin"), er=document.getElementById("tkErr"); if(!i) return;
+  if(er) er.textContent="Vérification...";
+  tkUnlock(i.value.trim(),function(ok){ if(ok) tkRender(id); else { if(er) er.textContent="Code incorrect"; i.value=""; i.focus(); } }); }
+function tkShared(id){ var n=TK_SHN[id]; if(!n) return "";
+  if(!TK_SD){ var pin=null; try{ pin=localStorage.getItem("valk26_pin"); }catch(x){}
+    if(pin){ setTimeout(function(){ tkUnlock(pin,function(ok){ if(!ok){ try{ localStorage.removeItem("valk26_pin"); }catch(x){} } tkRender(id); }); },0); return '<div class="tk-none">Ouverture des billets...</div>'; }
+    return '<div class="tk-lock"><div class="tk-lk-t">&#128274; Billets du groupe</div><div class="tk-lk-s">'+(n>1?n+' billets enregistrés':'1 billet enregistré')+'. Tapez le code pour les afficher.</div>'
+      +'<input id="tkPin" type="password" inputmode="numeric" pattern="[0-9]*" maxlength="8" autocomplete="off" placeholder="Code" oninput="if(this.value.length===4)tkTry(\''+id+'\')" onkeydown="if(event.key===\'Enter\')tkTry(\''+id+'\')">'
+      +'<button onclick="tkTry(\''+id+'\')">Afficher les billets</button><div id="tkErr" class="tk-err"></div></div>'; }
+  var v=TK_SD[id]; if(!v) return ""; var m=v.items.length;
+  var h='<div class="tk-cnt">'+e(v.note)+'</div>';
+  v.items.forEach(function(x,j){ h+='<div class="tk-item tk-gen"><div class="tk-num">'+(m>1?'BILLET '+(j+1)+' SUR '+m:'BILLET GROUPE')+'</div>'
+    +'<div class="tk-qr"><img src="data:image/png;base64,'+x.png+'" alt="QR code"></div>'
+    +'<div class="tk-inf"><b>'+e(v.lieu)+'</b><span>'+e(v.quand)+'</span><span>'+e(v.type)+' · n° '+e(x.code)+'</span></div></div>'; });
+  return h; }
 var TK_URLS=[];
 function tkRender(id){ var box=document.getElementById("tkBody"); if(!box) return;
   TK_URLS.forEach(function(u){ URL.revokeObjectURL(u); }); TK_URLS=[];
-  tkList(id,function(a){ var h="";
-    if(!a.length) h='<div class="tk-none">Aucun billet sur ce téléphone.<br>Ajoutez la capture du QR code ou le PDF reçu par e-mail.</div>';
+  tkList(id,function(a){ var h=tkShared(id);
+    if(!a.length && !TK_SHN[id]) h='<div class="tk-none">Aucun billet sur ce téléphone.<br>Ajoutez la capture du QR code ou le PDF reçu par e-mail.</div>';
+    if(a.length && TK_SHN[id]) h+='<div class="tk-cnt" style="margin-top:16px">Ajoutés sur ce téléphone</div>';
     a.sort(function(p,q){return p.ts-q.ts}); if(a.length>1) h+='<div class="tk-cnt">'+a.length+' billets : un QR code par personne</div>';
     a.forEach(function(x,j){ var u=URL.createObjectURL(x.blob); TK_URLS.push(u);
       h+='<div class="tk-item">'+(a.length>1?'<div class="tk-num">Billet '+(j+1)+' sur '+a.length+'</div>':'')+(/pdf/.test(x.type)?'<iframe src="'+u+'" class="tk-pdf"></iframe><a class="tk-open" href="'+u+'" target="_blank">Ouvrir le PDF en plein écran</a>':'<img src="'+u+'" alt="">')
@@ -2654,7 +2684,7 @@ function tkOpen(id,title){ var o=document.getElementById("tkSheet");
   if(!o){ o=document.createElement("div"); o.id="tkSheet"; o.className="tk-sh"; document.body.appendChild(o);
     o.addEventListener("click",function(ev){ if(ev.target===o) tkClose(); }); }
   o.innerHTML='<div class="tk-pan"><div class="tk-bar"></div><div class="tk-hd"><div><div class="tk-k">&#127903;&#65039; BILLETS</div><div class="tk-t">'+e(title)+'</div></div><button class="tk-x" onclick="tkClose()">&#10005;</button></div>'
-    +'<div class="tk-tip">À l’entrée : luminosité au maximum. Les billets restent uniquement sur ce téléphone.</div>'
+    +'<div class="tk-tip">À l’entrée : luminosité au maximum.</div>'
     +'<div id="tkBody" class="tk-body"></div>'
     +'<label class="tk-add">+ Ajouter des billets (photos ou PDF)<input type="file" accept="image/*,application/pdf" multiple onchange="tkAdd(\''+id+'\',this.files);this.value=\'\'" style="display:none"></label></div>';
   o.classList.add("open"); tkRender(id); }
