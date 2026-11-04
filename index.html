@@ -580,6 +580,7 @@ details.acc[open] .acc-chevron{transform:rotate(180deg)}
 .tk-lock input{width:150px;box-sizing:border-box;text-align:center;font-size:26px;letter-spacing:10px;padding:10px;border-radius:12px;border:0;background:#FAF7F0;color:#0F1B23;outline:none}
 .tk-lock button{display:block;width:100%;margin-top:12px;border:0;border-radius:12px;padding:12px 0;background:#2F7A5F;color:#fff;font-weight:700;font-size:14px}.tk-err{min-height:18px;margin-top:8px;font-size:13px;color:#F29B82;font-weight:700}
 .tk-qr{background:#fff;padding:14px 0 4px;text-align:center}.tk-qr img{width:72%;max-width:300px;height:auto;image-rendering:pixelated;display:inline-block}
+.tk-fl{border-top:1px solid #f0ebe0}.tk-fl summary{padding:11px 14px;font-size:13px;font-weight:700;color:#2F7A5F;text-align:center;list-style:none;cursor:pointer}.tk-fl summary::-webkit-details-marker{display:none}.tk-fl[open] summary{color:#6d655b}.tk-fl img{display:block;width:100%;height:auto}
 .tk-inf{padding:4px 14px 14px;text-align:center;display:flex;flex-direction:column;gap:3px}.tk-inf b{font:600 17px Georgia,serif;color:#0F1B23}.tk-inf span{font-size:12.5px;color:#6d655b}
 .tk-add{display:block;text-align:center;background:#0F1B23;color:#F2D08A;border-radius:12px;padding:13px 0;font-weight:700;font-size:14px}
 </style>
@@ -2667,7 +2668,8 @@ function tkShared(id){ var n=TK_SHN[id]; if(!n) return "";
   var h='<div class="tk-cnt">'+e(v.note)+'</div>';
   v.items.forEach(function(x,j){ h+='<div class="tk-item tk-gen"><div class="tk-num">'+(m>1?'BILLET '+(j+1)+' SUR '+m:'BILLET GROUPE')+'</div>'
     +'<div class="tk-qr"><img src="data:image/png;base64,'+x.png+'" alt="QR code"></div>'
-    +'<div class="tk-inf"><b>'+e(v.lieu)+'</b><span>'+e(v.quand)+'</span><span>'+e(v.type)+' · n° '+e(x.code)+'</span></div></div>'; });
+    +'<div class="tk-inf"><b>'+e(v.lieu)+'</b><span>'+e(v.quand)+'</span><span>'+e(v.type)+' · n° '+e(x.code)+'</span></div>'
+    +(x.full?'<details class="tk-fl"><summary>Voir le billet complet</summary><img src="data:image/jpeg;base64,'+x.full+'" alt="Billet complet"></details>':'')+'</div>'; });
   return h; }
 var TK_URLS=[];
 function tkRender(id){ var box=document.getElementById("tkBody"); if(!box) return;
