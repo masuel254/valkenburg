@@ -2649,7 +2649,7 @@ function tkDel(k,id){ if(!confirm("Retirer ce billet du téléphone ?")) return;
 var TK_SHN={"gemeentegrot":1,"fluweelengrot":6,"stiphout":1}, TK_SD=null;
 function tkB64(s){ return Uint8Array.from(atob(s),function(c){return c.charCodeAt(0);}); }
 function tkUnlock(pin,cb){ var S=crypto.subtle;
-  fetch("billets.enc.json").then(function(r){return r.json();}).then(function(f){
+  fetch("billets.enc.json",{cache:"no-cache"}).then(function(r){return r.json();}).then(function(f){
     return S.importKey("raw",new TextEncoder().encode(pin),"PBKDF2",false,["deriveKey"]).then(function(k){
       return S.deriveKey({name:"PBKDF2",salt:tkB64(f.salt),iterations:f.it,hash:"SHA-256"},k,{name:"AES-GCM",length:256},false,["decrypt"]); })
     .then(function(k){ return S.decrypt({name:"AES-GCM",iv:tkB64(f.iv)},k,tkB64(f.ct)); }); })
